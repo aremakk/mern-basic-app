@@ -1,0 +1,24 @@
+import js from '@eslint/js';
+import globals from 'globals';
+import prettierPlugin from 'eslint-plugin-prettier';
+import { defineConfig } from 'eslint/config';
+
+export default defineConfig([
+  {
+    files: ['**/*.{js,mjs,cjs}'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
+    },
+    plugins: {
+      prettier: prettierPlugin,
+    },
+    rules: {
+      ...js.configs.recommended.rules,
+      'prettier/prettier': 'error', // показывать ошибки Prettier как ESLint ошибки
+    },
+    extends: ['plugin:prettier/recommended'], // отключает конфликтующие правила
+  },
+]);
