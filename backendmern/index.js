@@ -5,6 +5,7 @@ import authRoutes from './routes/auth.routes.js';
 import clientRoutes from './routes/client.routes.js';
 import serviceRoutes from './routes/service.routes.js';
 import appointmentRoutes from './routes/appointment.routes.js';
+import userRoutes from './routes/user.routes.js';
 import morgan from 'morgan';
 import cors from 'cors';
 
@@ -28,6 +29,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/clients', clientRoutes)
 app.use('/api/services', serviceRoutes);
 app.use('/api/appointments', appointmentRoutes);
+app.use('/api/users', userRoutes);
 
 // DB + server start
 mongoose

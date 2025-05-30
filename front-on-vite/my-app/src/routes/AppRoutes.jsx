@@ -10,6 +10,8 @@ import ServiceForm from '../components/services/ServiceForm';
 import AppointmentList from '../components/appointments/AppointmentList';
 import AppointmentForm from '../components/appointments/AppointmentForm';
 import Register from '../components/auth/Register';
+import UserList from '../components/adminpage/Users';
+import UserForm from '../components/adminpage/UserForm';
 
 const AppRoutes = () => {
   const { user } = useAuth();
@@ -67,6 +69,16 @@ const AppRoutes = () => {
         path="/appointments/:id/edit"
         element={user ? <AppointmentForm /> : <Navigate to="/login" />}
       />
+      <Route
+        path="/users"
+        element={user && user.user.role === 'admin' ? <UserList /> : <Navigate to="/" />}
+      />
+      <Route
+        path="/users/:id/edit"
+        element={user && user.user.role === 'admin' ? <UserForm /> : <Navigate to="/" />}
+      />
+
+
     </Routes>
   );
 };

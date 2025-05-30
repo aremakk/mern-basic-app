@@ -4,20 +4,20 @@ import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 
-const ClientList = () => {
-  const [clients, setClients] = useState([]);
+const UserList = () => {
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const [error, setError] = useState(null);
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const fetchClients = async () => {
+    const fetchUsers = async () => {
       try {
-        const res = await axios.get('http://localhost:8081/api/clients', {
+        const res = await axios.get('http://localhost:8081/api/users', {
           headers: { Authorization: `Bearer ${user.token}` },
         });
-        setClients(res.data);
+        setUsers(res.data);
       } catch (err) {
         setError(err.response.data.error);
         setShow(true);
@@ -27,19 +27,19 @@ const ClientList = () => {
       }
     };
 
-    fetchClients();
+    fetchUsers();
   }, [user.token]);
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Удалить клиента?')) return;
+    if (!window.confirm('Удалить пользователя?')) return;
 
     try {
       await axios
-        .delete(`http://localhost:8081/api/clients/${id}`, {
+        .delete(`http://localhost:8081/api/users/${id}`, {
           headers: { Authorization: `Bearer ${user.token}` },
         })
         .then(() => {
-          setClients((prev) => prev.filter((item) => item._id !== id));
+          setUsers((prev) => prev.filter((item) => item._id !== id));
         });
     } catch (err) {
       setError(err.response?.data.error);
@@ -58,9 +58,9 @@ const ClientList = () => {
   return (
     <Container className="mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h3>Клиенты</h3>
-        <Button as={Link} to="/clients/new">
-          + Новый клиент
+        <h3>Пользователи</h3>
+        <Button as={Link} to="/users/new">
+          + Новый пользователь
         </Button>
       </div>
       {show && (
@@ -79,34 +79,35 @@ const ClientList = () => {
         <thead>
           <tr>
             <th>#</th>
-            <th>Имя</th>
-            <th>Телефон</th>
+            <th>Юзернейм</th>
+            <th>Почта</th>
+            <th>Роль</th>
+            <th>Действия</th>
+
           </tr>
         </thead>
         <tbody>
-          {clients.map((client, index) => (
-            <tr key={client._id}>
+          {users.map((user, index) => (
+            <tr key={user._id}>
               <td>{index + 1}</td>
-              <td>{client.name}</td>
-              <td>{client.phone}</td>
+              <td>{user.username}</td>
+              <td>{user.email}</td>
+              <td>{user.role}</td>
               <td>
                 <Button
                   as={Link}
-                  to={`/clients/${client._id}/edit`}
+                  to={`/users/${user._id}/edit`}
                   size="sm"
                   variant="outline-secondary"
                 >
                   ✏️
                 </Button>
-                {user.user.role === 'admin' &&
-                  <Button
+                <Button
                   variant="danger"
-                  onClick={() => handleDelete(client._id)}
+                  onClick={() => handleDelete(user._id)}
                 >
                   Удалить
                 </Button>
-                }
-                
               </td>
             </tr>
           ))}
@@ -116,4 +117,4 @@ const ClientList = () => {
   );
 };
 
-export default ClientList;
+export default UserList;
