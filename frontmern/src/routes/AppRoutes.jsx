@@ -9,6 +9,7 @@ import ServiceList from '../components/services/ServiceList';
 import ServiceForm from '../components/services/ServiceForm';
 import AppointmentList from '../components/appointments/AppointmentList';
 import AppointmentForm from '../components/appointments/AppointmentForm';
+import Register from '../components/auth/Register';
 
 
 const AppRoutes = () => {
@@ -17,6 +18,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
       <Route path="/" element={user ? <Dashboard /> : <Navigate to="/login" />} />
       <Route path="*" element={<h2>Страница не найдена</h2>} />
       <Route path="/clients" element={user ? <ClientList /> : <Navigate to="/login" />} />

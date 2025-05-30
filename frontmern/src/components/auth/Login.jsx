@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
+import { Nav } from 'react-bootstrap';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 const Login = () => {
@@ -41,6 +42,9 @@ const Login = () => {
         <Button variant="primary" type="submit" className="w-100">
           Войти
         </Button>
+        <span>
+          Нет логина? <Nav.Link as={Link} to="/register">Зарегистрироваться</Nav.Link>
+        </span>
       </Form>
     </Container>
   );
