@@ -1,8 +1,11 @@
+import cache from '../middleware/cache.js';
 import Appointment from '../models/appointment.model.js';
 
 export const createAppointment = async (req, res) => {
   try {
     const appointment = await Appointment.create(req.body);
+    cache.del('appointments')
+    cache.del('next-appointment')
     res.status(201).json(appointment);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -38,6 +41,8 @@ export const updateAppointment = async (req, res) => {
       .populate('client', 'name phone email')
       .populate('services', 'name price');
     if (!appointment) return res.status(404).json({ error: 'Запись не найдена' });
+    cache.del('appointments')
+    cache.del('next-appointment')
     res.json(appointment);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -48,6 +53,8 @@ export const deleteAppointment = async (req, res) => {
   try {
     const appointment = await Appointment.findByIdAndDelete(req.params.id);
     if (!appointment) return res.status(404).json({ error: 'Запись не найдена' });
+    cache.del('appointments')
+    cache.del('next-appointment')
     res.json({ message: 'Запись удалена' });
   } catch (err) {
     res.status(500).json({ error: err.message });

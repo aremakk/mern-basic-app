@@ -1,9 +1,12 @@
 import Client from '../models/client.model.js';
 import Appointment from '../models/appointment.model.js'
+import cache from '../middleware/cache.js';
 
 export const createClient = async (req, res) => {
   try {
     const client = await Client.create(req.body);
+    cache.del('clientCount')
+    cache.del('clients')
     res.status(201).json(client);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -33,6 +36,8 @@ export const updateClient = async (req, res) => {
   try {
     const client = await Client.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!client) return res.status(404).json({ error: 'Клиент не найден' });
+    cache.del('clientCount')
+    cache.del('clients')
     res.json(client);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -46,6 +51,8 @@ export const deleteClient = async (req, res) => {
     if(appointment == null){
       const client = await Client.findByIdAndDelete(req.params.id);
       if (!client) return res.status(404).json({ error: 'Клиент не найден' });
+      cache.del('clientCount')
+      cache.del('clients')
       res.json({ message: 'Клиент удалён' });
     }else{
       res.status(409).json({error: "Клиент не может быть удален. Есть связанные записи"})

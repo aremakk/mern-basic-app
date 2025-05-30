@@ -8,12 +8,12 @@ services:
   #   depends_on:
   #     - server
 
-   vite-frontend:
-     build: ./front-on-vite/my-app
-     ports:
-       - "3000:80" # Локальный порт 3000 → nginx внутри контейнера (порт 80)
-     container_name: vite-frontend
-     restart: unless-stopped
+  vite-frontend:
+    build: ./front-on-vite/my-app
+    ports:
+      - "3000:80" # Локальный порт 3000 → nginx внутри контейнера (порт 80)
+    container_name: vite-frontend
+    restart: unless-stopped
 
 
   server:

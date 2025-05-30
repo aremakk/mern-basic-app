@@ -59,7 +59,7 @@ const Dashboard = () => {
               <Card.Title>Следующая запись:</Card.Title>
               <Card.Text>
                 <p> <b>Клиент:</b> {nextApp?.client.name} </p>
-                <p><b>Время:</b> {time.toLocaleString()}</p>
+                {/* <p><b>Время:</b> {time.toLocaleString()}</p> */}
                 <Button>Перейти к записи</Button>
               </Card.Text>
             </Card.Body>

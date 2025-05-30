@@ -1,3 +1,4 @@
+import cache from '../middleware/cache.js';
 import User from '../models/user.model.js';
 import jwt from 'jsonwebtoken';
 
@@ -9,6 +10,7 @@ export const register = async (req, res) => {
     const { username, email, password, role } = req.body;
     const user = await User.create({ username, email, password, role });
     const token = createToken(user);
+    cache.del('users')
     res.status(201).json({ user: { id: user._id, username, role: user.role }, token });
   } catch (err) {
     res.status(400).json({ error: 'Пользователь не создан', details: err.message });

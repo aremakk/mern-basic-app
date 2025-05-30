@@ -14,6 +14,7 @@ const AppointmentList = () => {
       const res = await axios.get('http://localhost:8081/api/appointments', {
         headers: { Authorization: `Bearer ${user.token}` },
       });
+      console.log(res)
       setAppointments(res.data);
     } catch (err) {
       console.error('Ошибка загрузки записей:', err);

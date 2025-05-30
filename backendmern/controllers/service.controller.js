@@ -1,11 +1,13 @@
 import Service from '../models/service.model.js';
 import Appointment from '../models/appointment.model.js'
+import cache from '../middleware/cache.js';
 
 
 export const createService = async (req, res) => {
   try {
     const service = await Service.create(req.body);
     res.status(201).json(service);
+    cache.del('services')
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -34,6 +36,7 @@ export const updateService = async (req, res) => {
   try {
     const service = await Service.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!service) return res.status(404).json({ error: 'Услуга не найдена' });
+    cache.del('services')
     res.json(service);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -47,6 +50,7 @@ export const deleteService = async (req, res) => {
         if(appointment == null){
           const service = await Service.findByIdAndDelete(req.params.id);
           if (!service) return res.status(404).json({ error: 'Услуга не найдена' });
+          cache.del('services')
           res.json({ message: 'Услуга удалена' });
         }else{
           res.status(409).json({error: "Услуга не может быть удалена. Есть связанные записи"})
