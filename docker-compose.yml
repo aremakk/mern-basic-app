@@ -1,12 +1,12 @@
 version: '3.8'
 
 services:
-  client:
-    build: ./frontmern
-    ports:
-      - "3000:80"
-    depends_on:
-      - server
+  # client:
+  #   build: ./frontmern
+  #   ports:
+  #     - "3000:80"
+  #   depends_on:
+  #     - server
 
   server:
     build: ./backendmern
