@@ -99,6 +99,7 @@ const UserList = () => {
                   to={`/users/${user._id}/edit`}
                   size="sm"
                   variant="outline-secondary"
+                  className='me-2'
                 >
                   ✏️
                 </Button>

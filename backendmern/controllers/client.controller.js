@@ -55,3 +55,38 @@ export const deleteClient = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+
+export const getClientsCreatedToday = async (req, res) => {
+  try{
+    const start = new Date()
+    const end = new Date()
+    start.setHours(0,0,0,0)
+    end.setHours(23,59,59,999)
+
+    console.log('from: %d', start.getDate() )
+    console.log('to: %d', end.getDate())
+
+
+
+    const result = await Client.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: start,
+            $lte: end,
+          },
+        },
+      },
+      {
+        $count: 'todayCount',
+      },
+    ])
+
+
+    const count = result[0]?.todayCount || 0
+    res.json({res: count})
+  } catch (err) {
+    res.status(500).json( {error: err.message} )
+  }
+}

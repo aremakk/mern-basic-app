@@ -53,3 +53,27 @@ export const deleteAppointment = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+
+export const getNearestAppointment = async (req, res) => {
+  try {
+    const now = new Date();
+
+    const nearest = await Appointment.findOne({
+      date: { $gte: now },
+    }).sort({ date: 1 }).populate('client');
+
+    const date = nearest.date.getDate
+    const hour = nearest.date.getHours
+    
+    console.log(nearest)// ближайшая по времени
+
+    if (!nearest) {
+      return res.status(404).json({ message: 'Ближайшая запись не найдена' });
+    }
+
+    res.json({appointment: nearest, date: date, hour: hour});
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

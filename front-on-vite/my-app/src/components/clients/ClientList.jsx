@@ -95,6 +95,7 @@ const ClientList = () => {
                   to={`/clients/${client._id}/edit`}
                   size="sm"
                   variant="outline-secondary"
+                  className="me-2"
                 >
                   ✏️
                 </Button>
