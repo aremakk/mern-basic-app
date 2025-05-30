@@ -18,9 +18,10 @@ const ServiceForm = () => {
 
   useEffect(() => {
     if (isEdit) {
-      axios.get(`http://localhost:8081/api/services/${id}`, {
-        headers: { Authorization: `Bearer ${user.token}` },
-      })
+      axios
+        .get(`http://localhost:8081/api/services/${id}`, {
+          headers: { Authorization: `Bearer ${user.token}` },
+        })
         .then((res) => {
           setName(res.data.name);
           setPrice(res.data.price);
@@ -35,13 +36,21 @@ const ServiceForm = () => {
     setError('');
     try {
       if (isEdit) {
-        await axios.patch(`http://localhost:8081/api/services/${id}`, { name, price }, {
-          headers: { Authorization: `Bearer ${user.token}` },
-        });
+        await axios.patch(
+          `http://localhost:8081/api/services/${id}`,
+          { name, price },
+          {
+            headers: { Authorization: `Bearer ${user.token}` },
+          },
+        );
       } else {
-        await axios.post(`http://localhost:8081/api/services`, { name, price }, {
-          headers: { Authorization: `Bearer ${user.token}` },
-        });
+        await axios.post(
+          `http://localhost:8081/api/services`,
+          { name, price },
+          {
+            headers: { Authorization: `Bearer ${user.token}` },
+          },
+        );
       }
       navigate('/services');
     } catch (err) {
@@ -49,7 +58,12 @@ const ServiceForm = () => {
     }
   };
 
-  if (loading) return <div className="text-center mt-5"><Spinner /></div>;
+  if (loading)
+    return (
+      <div className="text-center mt-5">
+        <Spinner />
+      </div>
+    );
 
   return (
     <Container className="mt-4" style={{ maxWidth: 600 }}>
@@ -79,7 +93,9 @@ const ServiceForm = () => {
           />
         </Form.Group>
 
-        <Button type="submit" variant="primary">Сохранить</Button>
+        <Button type="submit" variant="primary">
+          Сохранить
+        </Button>
       </Form>
     </Container>
   );

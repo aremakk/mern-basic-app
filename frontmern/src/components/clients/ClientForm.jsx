@@ -15,9 +15,13 @@ const ClientForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8081/api/clients', { name, phone }, {
-        headers: { Authorization: `Bearer ${user.token}` },
-      });
+      await axios.post(
+        'http://localhost:8081/api/clients',
+        { name, phone },
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+        },
+      );
       navigate('/clients');
     } catch (err) {
       console.error(err);
@@ -50,7 +54,9 @@ const ClientForm = () => {
             required
           />
         </Form.Group>
-        <Button type="submit" variant="primary">Сохранить</Button>
+        <Button type="submit" variant="primary">
+          Сохранить
+        </Button>
       </Form>
     </Container>
   );

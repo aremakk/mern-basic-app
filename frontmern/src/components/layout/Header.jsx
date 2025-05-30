@@ -15,17 +15,27 @@ const Header = () => {
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
-        <Navbar.Brand as={Link} to="/">ClientPanel</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/">
+          ClientPanel
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="main-navbar" />
         <Navbar.Collapse id="main-navbar">
           <Nav className="me-auto">
             {user && (
               <>
-                <Nav.Link as={Link} to="/appointments">Записи</Nav.Link>
-                <Nav.Link as={Link} to="/clients">Клиенты</Nav.Link>
-                <Nav.Link as={Link} to="/services">Услуги</Nav.Link>
+                <Nav.Link as={Link} to="/appointments">
+                  Записи
+                </Nav.Link>
+                <Nav.Link as={Link} to="/clients">
+                  Клиенты
+                </Nav.Link>
+                <Nav.Link as={Link} to="/services">
+                  Услуги
+                </Nav.Link>
                 {user.role === 'admin' && (
-                  <Nav.Link as={Link} to="/users">Пользователи</Nav.Link>
+                  <Nav.Link as={Link} to="/users">
+                    Пользователи
+                  </Nav.Link>
                 )}
               </>
             )}
@@ -33,10 +43,14 @@ const Header = () => {
           <Nav>
             {user ? (
               <NavDropdown title={user.name || user.email} align="end">
-                <NavDropdown.Item onClick={handleLogout}>Выйти</NavDropdown.Item>
+                <NavDropdown.Item onClick={handleLogout}>
+                  Выйти
+                </NavDropdown.Item>
               </NavDropdown>
             ) : (
-              <Nav.Link as={Link} to="/login">Войти</Nav.Link>
+              <Nav.Link as={Link} to="/login">
+                Войти
+              </Nav.Link>
             )}
           </Nav>
         </Navbar.Collapse>

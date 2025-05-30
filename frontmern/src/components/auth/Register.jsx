@@ -37,24 +37,43 @@ const Register = () => {
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
           <Form.Label>Имя</Form.Label>
-          <Form.Control type="text" required value={name} onChange={(e) => setName(e.target.value)} />
+          <Form.Control
+            type="text"
+            required
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
         </Form.Group>
-        
+
         <Form.Group className="mb-3">
           <Form.Label>username</Form.Label>
-          <Form.Control type="text" required value={username} onChange={(e) => setUsername(e.target.value)} />
+          <Form.Control
+            type="text"
+            required
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
         </Form.Group>
 
         <Form.Group className="mb-3">
           <Form.Label>Email</Form.Label>
-          <Form.Control type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+          <Form.Control
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </Form.Group>
 
         <Form.Group className="mb-3">
           <Form.Label>Пароль</Form.Label>
-          <Form.Control type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+          <Form.Control
+            type="password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </Form.Group>
-        
 
         <Button variant="success" type="submit" className="w-100">
           Зарегистрироваться

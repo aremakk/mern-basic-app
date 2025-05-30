@@ -1,4 +1,6 @@
 import Service from '../models/service.model.js';
+import Appointment from '../models/appointment.model.js'
+
 
 export const createService = async (req, res) => {
   try {
@@ -40,9 +42,16 @@ export const updateService = async (req, res) => {
 
 export const deleteService = async (req, res) => {
   try {
-    const service = await Service.findByIdAndDelete(req.params.id);
-    if (!service) return res.status(404).json({ error: 'Услуга не найдена' });
-    res.json({ message: 'Услуга удалена' });
+    const appointment = await Appointment.findOne({services: req.params.id});
+    console.log(appointment)
+        if(appointment == null){
+          const service = await Service.findByIdAndDelete(req.params.id);
+          if (!service) return res.status(404).json({ error: 'Услуга не найдена' });
+          res.json({ message: 'Услуга удалена' });
+        }else{
+          res.status(409).json({error: "Услуга не может быть удалена. Есть связанные записи"})
+        }
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

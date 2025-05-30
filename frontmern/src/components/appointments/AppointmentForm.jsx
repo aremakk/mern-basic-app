@@ -25,8 +25,12 @@ const AppointmentForm = () => {
     const fetchData = async () => {
       try {
         const [clientsRes, servicesRes] = await Promise.all([
-          axios.get('http://localhost:8081/api/clients', { headers: { Authorization: `Bearer ${user.token}` }}),
-          axios.get('http://localhost:8081/api/services', { headers: { Authorization: `Bearer ${user.token}` }})
+          axios.get('http://localhost:8081/api/clients', {
+            headers: { Authorization: `Bearer ${user.token}` },
+          }),
+          axios.get('http://localhost:8081/api/services', {
+            headers: { Authorization: `Bearer ${user.token}` },
+          }),
         ]);
         setClients(clientsRes.data);
         setServices(servicesRes.data);
@@ -40,16 +44,17 @@ const AppointmentForm = () => {
   // Если редактируем — загрузим данные записи
   useEffect(() => {
     if (isEdit) {
-      axios.get(`http://localhost:8081/api/appointments/${id}`, {
-        headers: { Authorization: `Bearer ${user.token}` },
-      })
-      .then(res => {
-        setClientId(res.data.client?._id || '');
-        setSelectedServices(res.data.services.map(s => s._id));
-        setDate(new Date(res.data.date).toISOString().slice(0,16)); // формат для datetime-local
-      })
-      .catch(() => setError('Ошибка загрузки данных записи'))
-      .finally(() => setLoading(false));
+      axios
+        .get(`http://localhost:8081/api/appointments/${id}`, {
+          headers: { Authorization: `Bearer ${user.token}` },
+        })
+        .then((res) => {
+          setClientId(res.data.client?._id || '');
+          setSelectedServices(res.data.services.map((s) => s._id));
+          setDate(new Date(res.data.date).toISOString().slice(0, 16)); // формат для datetime-local
+        })
+        .catch(() => setError('Ошибка загрузки данных записи'))
+        .finally(() => setLoading(false));
     }
   }, [id, isEdit, user.token]);
 
@@ -63,9 +68,13 @@ const AppointmentForm = () => {
         date,
       };
       if (isEdit) {
-        await axios.put(`http://localhost:8081/api/appointments/${id}`, payload, {
-          headers: { Authorization: `Bearer ${user.token}` },
-        });
+        await axios.put(
+          `http://localhost:8081/api/appointments/${id}`,
+          payload,
+          {
+            headers: { Authorization: `Bearer ${user.token}` },
+          },
+        );
       } else {
         await axios.post(`http://localhost:8081/api/appointments`, payload, {
           headers: { Authorization: `Bearer ${user.token}` },
@@ -79,14 +88,19 @@ const AppointmentForm = () => {
 
   const handleServiceChange = (e) => {
     const value = e.target.value;
-    setSelectedServices(prev =>
+    setSelectedServices((prev) =>
       prev.includes(value)
-        ? prev.filter(id => id !== value)
-        : [...prev, value]
+        ? prev.filter((id) => id !== value)
+        : [...prev, value],
     );
   };
 
-  if (loading) return <div className="text-center mt-5"><Spinner /></div>;
+  if (loading)
+    return (
+      <div className="text-center mt-5">
+        <Spinner />
+      </div>
+    );
 
   return (
     <Container className="mt-4" style={{ maxWidth: 700 }}>
@@ -98,19 +112,21 @@ const AppointmentForm = () => {
           <Form.Label>Клиент</Form.Label>
           <Form.Select
             value={clientId}
-            onChange={e => setClientId(e.target.value)}
+            onChange={(e) => setClientId(e.target.value)}
             required
           >
             <option value="">Выберите клиента</option>
-            {clients.map(c => (
-              <option key={c._id} value={c._id}>{c.name}</option>
+            {clients.map((c) => (
+              <option key={c._id} value={c._id}>
+                {c.name}
+              </option>
             ))}
           </Form.Select>
         </Form.Group>
 
         <Form.Group className="mb-3">
           <Form.Label>Услуги</Form.Label>
-          {services.map(service => (
+          {services.map((service) => (
             <Form.Check
               key={service._id}
               type="checkbox"
@@ -127,12 +143,14 @@ const AppointmentForm = () => {
           <Form.Control
             type="datetime-local"
             value={date}
-            onChange={e => setDate(e.target.value)}
+            onChange={(e) => setDate(e.target.value)}
             required
           />
         </Form.Group>
 
-        <Button type="submit" variant="primary">Сохранить</Button>
+        <Button type="submit" variant="primary">
+          Сохранить
+        </Button>
       </Form>
     </Container>
   );

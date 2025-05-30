@@ -1,4 +1,5 @@
 import Client from '../models/client.model.js';
+import Appointment from '../models/appointment.model.js'
 
 export const createClient = async (req, res) => {
   try {
@@ -40,9 +41,16 @@ export const updateClient = async (req, res) => {
 
 export const deleteClient = async (req, res) => {
   try {
-    const client = await Client.findByIdAndDelete(req.params.id);
-    if (!client) return res.status(404).json({ error: 'Клиент не найден' });
-    res.json({ message: 'Клиент удалён' });
+    const appointment = await Appointment.findOne({client: req.params.id});
+    console.log(appointment)
+    if(appointment == null){
+      const client = await Client.findByIdAndDelete(req.params.id);
+      if (!client) return res.status(404).json({ error: 'Клиент не найден' });
+      res.json({ message: 'Клиент удалён' });
+    }else{
+      res.status(409).json({error: "Клиент не может быть удален. Есть связанные записи"})
+    }
+    
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

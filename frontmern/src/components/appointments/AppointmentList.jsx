@@ -26,9 +26,10 @@ const AppointmentList = () => {
     if (!window.confirm('Удалить эту запись?')) return;
 
     try {
-      await axios.delete(`http://localhost:8081/api/appointments/${id}`, 
-        {headers: { Authorization: `Bearer ${user.token}` }});
-      setAppointments(prev => prev.filter(item => item._id !== id));
+      await axios.delete(`http://localhost:8081/api/appointments/${id}`, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+      setAppointments((prev) => prev.filter((item) => item._id !== id));
     } catch (err) {
       console.error('Ошибка при удалении:', err.response?.data || err.message);
     }
@@ -38,13 +39,20 @@ const AppointmentList = () => {
     fetchAppointments();
   }, []);
 
-  if (loading) return <div className="text-center mt-5"><Spinner /></div>;
+  if (loading)
+    return (
+      <div className="text-center mt-5">
+        <Spinner />
+      </div>
+    );
 
   return (
     <Container className="mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h3>Записи</h3>
-        <Button as={Link} to="/appointments/new">+ Новая запись</Button>
+        <Button as={Link} to="/appointments/new">
+          + Новая запись
+        </Button>
       </div>
       <Table striped bordered hover>
         <thead>
@@ -61,7 +69,7 @@ const AppointmentList = () => {
             <tr key={appt._id}>
               <td>{idx + 1}</td>
               <td>{appt.client?.name || '—'}</td>
-              <td>{appt.services.map(s => s.name).join(', ')}</td>
+              <td>{appt.services.map((s) => s.name).join(', ')}</td>
               <td>{new Date(appt.date).toLocaleString()}</td>
               <td>
                 <Button

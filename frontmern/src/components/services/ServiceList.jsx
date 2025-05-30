@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Button, Container, Spinner } from 'react-bootstrap';
 import axios from 'axios';
+import { Alert } from 'react-bootstrap';
 import { useAuth } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 
@@ -8,9 +9,9 @@ const ServiceList = () => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
-  const [isAdmin, setIsAdmin] = useState(false)
-
-  
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [error, setError] = useState(null);
+  const [show, setShow] = useState(false);
 
   const fetchServices = async () => {
     try {
@@ -25,21 +26,59 @@ const ServiceList = () => {
     }
   };
 
+  const handleDelete = async (id) => {
+    if (!window.confirm('Удалить услугу?')) return;
+
+    try {
+      await axios
+        .delete(`http://localhost:8081/api/services/${id}`, {
+          headers: { Authorization: `Bearer ${user.token}` },
+        })
+        .then(() => {
+          setServices((prev) => prev.filter((item) => item._id !== id));
+        });
+    } catch (err) {
+      setError(err.response?.data.error);
+      setShow(true);
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
-    setIsAdmin(user.user.role == 'admin')
+    setIsAdmin(user.user.role == 'admin');
     fetchServices();
   }, []);
 
-  if (loading) return <div className="text-center mt-5"><Spinner /></div>;
+  if (loading)
+    return (
+      <div className="text-center mt-5">
+        <Spinner />
+      </div>
+    );
 
   return (
     <Container className="mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h3>Услуги</h3>
         {isAdmin && (
-          <Button as={Link} to="/services/new">+ Новая услуга</Button>
+          <Button as={Link} to="/services/new">
+            + Новая услуга
+          </Button>
         )}
       </div>
+
+      {show && (
+        <Alert
+          variant="danger"
+          onClose={() => {
+            setShow(false);
+          }}
+          dismissible
+        >
+          <Alert.Heading>Упс! ошибочка вышла...</Alert.Heading>
+          <p>{error}</p>
+        </Alert>
+      )}
 
       <Table striped bordered hover>
         <thead>
@@ -65,6 +104,12 @@ const ServiceList = () => {
                     variant="outline-secondary"
                   >
                     ✏️
+                  </Button>
+                  <Button
+                    variant="danger"
+                    onClick={() => handleDelete(service._id)}
+                  >
+                    Удалить
                   </Button>
                 </td>
               )}

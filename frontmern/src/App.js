@@ -5,7 +5,6 @@ import { AuthProvider } from './context/AuthContext';
 import Header from './components/layout/Header';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
 function App() {
   return (
     <AuthProvider>

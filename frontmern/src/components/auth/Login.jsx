@@ -16,7 +16,10 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:8081/api/auth/login', { email, password });
+      const res = await axios.post('http://localhost:8081/api/auth/login', {
+        email,
+        password,
+      });
       login(res.data); // { token, user info... }
       navigate('/');
     } catch (err) {
@@ -31,19 +34,32 @@ const Login = () => {
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
           <Form.Label>Email</Form.Label>
-          <Form.Control type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+          <Form.Control
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </Form.Group>
 
         <Form.Group className="mb-3">
           <Form.Label>Пароль</Form.Label>
-          <Form.Control type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+          <Form.Control
+            type="password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </Form.Group>
 
         <Button variant="primary" type="submit" className="w-100">
           Войти
         </Button>
         <span>
-          Нет логина? <Nav.Link as={Link} to="/register">Зарегистрироваться</Nav.Link>
+          Нет логина?{' '}
+          <Nav.Link as={Link} to="/register">
+            Зарегистрироваться
+          </Nav.Link>
         </span>
       </Form>
     </Container>
